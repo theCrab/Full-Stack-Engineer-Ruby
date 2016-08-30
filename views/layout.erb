@@ -36,8 +36,8 @@
       <nav class="uk-navbar" data-uk-sticky>
         <div class="uk-navbar-center">
           <p class="uk-margin-top"><a href="/" class=""><img src="https://raw.githubusercontent.com/Streetbees/Full-Stack-Engineer-Ruby/master/assets/marvel_logo.png" alt="Marvel" /></a></p>
-          <form class="uk-search uk-nav-search uk-margin-bottom" id="search" data-uk-search action="/" method="get">
-            <input class="uk-search-field uk-form-width-large" type="search" name="search" placeholder="Search for marvel characters or teams">
+          <form class="uk-search uk-nav-search uk-margin-bottom" id="search" data-uk-search action="/" method="post">
+            <input class="uk-search-field uk-form-width-large" type="search" id="q" name="q" placeholder="Search for marvel characters or teams">
           </form>
         </div>
       </nav>
@@ -69,10 +69,27 @@
         })
 
         // Search the comic character
-        $('#search').submit(function (e) {
-          e.preventDefault()
+        $('form#search').on('submit', function (e) {
+          e.preventDefault();
           $.ajax({
+            url: "/",
+            type: "post",
+            data: { "q": $('q').text() },
+            complete: function (msg) {
+              console.log(msg)
+            }
+          })
+        });
 
+        $('figure a').click(function (e) {
+          e.preventDefault();
+          $.ajax({
+            url: $(this).attr('href'),
+            type: 'post',
+            data: { comic_id: $(this).attr('data-comicId') },
+            complete: function () {
+              alert('all was good')
+            }
           })
         })
       })

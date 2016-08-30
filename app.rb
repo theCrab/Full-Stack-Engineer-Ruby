@@ -51,6 +51,15 @@ get '/' do
   erb :index
 end
 
+# Search
+# query using character
+post '/' do
+  comic = Client.character(params[:q])
+
+  status 200
+  format_response(comic, required.accept)
+end
+
 patch '/comics/:comic_id' do
   fav = Comic.where(comic_id: params[:comic_id])
   fav.favourites_count += 1
@@ -64,11 +73,26 @@ end
 
 # Upvote a favourite comic
 # We save it to the database because we love it
-def upvote
-  @comic = ComicRepo.find(params[:comic_id])
-  if @comic
-    @comic.votes + 1
+post '/upvote/:comic_id' do
+  comic = Comic.get(params[:comic_id])
+  if comic
+    comic.favourite = true
   else
-    @comic = hit_marvel(params[:comic_id]).to_json
+    c = Client.comic(params[:comic_id])
+    comic = Comic.create(
+              comic_id: c[0][:id],
+              favourite: true,
+              title: c[0][:title])
+  end
+
+  status 201
+  format_response(comic, request.accept)
+end
+
+def format_response(data, accept)
+  accept.each do |type|
+    return data.to_xml  if type.downcase.eql? 'text/xml'
+    return data.to_json if type.downcase.eql? 'application/json'
+    return data.to_json
   end
 end

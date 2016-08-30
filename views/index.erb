@@ -3,6 +3,8 @@
   <figure
     class="uk-thumbnail uk-margin-left uk-margin-top"
     style="background: #2b2b2b url(<%= "#{comic[:thumbnail][:path]}.#{comic[:thumbnail][:extension]}" %>)">
+    <a href="/upvote/<%= comic[:id]%>" data-comicId="<%= comic[:id]%>">&#9825;</a>
+
     <figcaption>
       <strong class="title"> <%= comic[:title] %> </strong> <br>
       <span class="numbers">
