@@ -22,8 +22,8 @@
       <nav class="uk-navbar" data-uk-sticky>
         <div class="uk-navbar-center">
           <p class="uk-margin-top"><a href="/" class=""><img src="https://raw.githubusercontent.com/Streetbees/Full-Stack-Engineer-Ruby/master/assets/marvel_logo.png" alt="Marvel" /></a></p>
-          <form class="uk-search uk-nav-search uk-margin-bottom" data-uk-search>
-            <input class="uk-search-field uk-form-width-large" type="search" placeholder="Search for marvel characters or teams">
+          <form class="uk-search uk-nav-search uk-margin-bottom" id="search" data-uk-search action="/" method="get">
+            <input class="uk-search-field uk-form-width-large" type="search" name="search" placeholder="Search for marvel characters or teams">
           </form>
         </div>
       </nav>
@@ -52,6 +52,14 @@
         // Show each on hover
         $('figure').hover( function (e) {
           $(this).children('a, figcaption').toggle(e.type === 'mouseenter')
+        })
+
+        // Search the comic character
+        $('#search').submit(function (e) {
+          e.preventDefault()
+          $.ajax({
+
+          })
         })
       })
     </script>

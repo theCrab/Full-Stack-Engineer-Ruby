@@ -1,8 +1,24 @@
 <div class="uk-clearfix">
-  <% 50.times do %>
-<figure class="uk-thumbnail uk-margin-left uk-margin-top" style="background: transparent url(http://placehold.it/150x200); background-repeat: none;">
-  <a href="" class="" data-value="">&#9825;</a>
-  <figcaption><strong class="title">This is the title which should be a little longer</strong> <br><span class="numbers"><strong class="fav-count">#12</strong> 465</small></figcaption>
-</figure>
-<% end %>
+  <% 5.times do %>
+    <figure
+      class="uk-thumbnail uk-margin-left uk-margin-top"
+      style="background: transparent url(http://placehold.it/204x300)">
+
+      <a href="" class="" data-value="">&#9825;</a>
+      <figcaption><strong class="title">This is the title which should be a little longer</strong> <br><span class="numbers"><strong class="fav-count">#12</strong> 465</span></figcaption>
+    </figure>
+  <% end %>
+  <% @comics.each do |comic| %>
+  <figure
+    class="uk-thumbnail uk-margin-left uk-margin-top"
+    style="background: transparent url(<%= "#{comic[:thumbnail][:path]}.#{comic[:thumbnail][:extension]}" %>); background-repeat: no-repeat; background-position: top left;">
+    <figcaption>
+      <strong class="title"><%= comic[:title] %></strong> <br>
+      <span class="numbers">
+        <strong class="fav-count">#<%= comic[:issueNumber] %></strong>
+        <%= comic[:dates][-1][:date].split('-')[0] %>
+      </span>
+    </figcaption>
+  </figure>
+  <% end %>
 </div>
