@@ -1,19 +1,53 @@
+#!/usr/local/bin/ruby -rubygems
+
 require 'rubygems'
 require 'sinatra'
+require 'dm-core'
+require 'dm-validations'
+require 'dm-timestamps'
+require 'dm-migrations'
+require 'dotenv'
 require 'marvel_api'
 
-Client = Marvel::Client.new
+Dotenv.load!
 
+# Setup Marvel API configs
+Client = Marvel::Client.new
 Client.configure do |config|
-  config.api_key     = '962d5f16d7ac13fb8193c585d14ee2c0'
-  config.private_key = 'a67b0a227d0e9334ebca703336b374e14e039d6b'
+  config.api_key     = ENV['MARVEL_PUBLIC_KEY']
+  config.private_key = ENV['MARVEL_PRIVATE_KEY']
 end
+
+# Setup DataMapper
+# ENV['DATABASE_URL']
+DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db/streetbees.db")
+
+# Comic Model
+class Comic
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :title, String, required: true
+  property :favourite, Boolean, default: false
+  property :favourites_count, Integer, default: 0
+  property :comic_id, String, required: true, index: true
+
+  property :created_at, DateTime
+  property :updated_at, DateTime
+end
+
+# Run the database migrations
+DataMapper.auto_upgrade!
 
 # Get all comics
 # order(:release_date).asc
 get '/' do
-  # @comics = Client.comics
-  # puts @comics.last.to_json
+  if params[:search]
+    @comics = Client.character(name: params[:search])
+  else
+    @comics = Client.comics
+  end
+  # puts @comics[0].to_json
   erb :index
 end
 
@@ -28,6 +62,13 @@ patch '/comics/:comic_id' do
   redirect '/'
 end
 
-def search(ps)
-  @client.comics(title: ps[:search])
+# Upvote a favourite comic
+# We save it to the database because we love it
+def upvote
+  @comic = ComicRepo.find(params[:comic_id])
+  if @comic
+    @comic.votes + 1
+  else
+    @comic = hit_marvel(params[:comic_id]).to_json
+  end
 end
