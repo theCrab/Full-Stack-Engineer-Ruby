@@ -5,31 +5,7 @@
     <title><%= @title || 'Streetbees' %></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.26.4/css/uikit.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.26.4/css/components/sticky.min.css" />
-    <style media="screen">
-      body { background-color: #2b2b2b }
-      figure {
-        background-repeat: no-repeat;
-        background-position: top left;
-        position: relative;
-        min-width:204px;
-        min-height:300px;
-        font-size: 16px;
-        text-transform: uppercase;
-        cursor: pointer;
-        box-shadow: 1px 10px 15px 10px #2a2a2a;
-      }
-      figure:hover { box-shadow: inset 0 0 0 0.6em red; }
-      figure a { float: right; margin: 15px; font-weight: bold; color: white; }
-      figure a:hover { display: block; text-decoration: none; color: red; }
-      figcaption { position: absolute; bottom: 15px; left: 4px; padding: 0 16px; color: white; line-height: 120%;}
-      figcaption .title { font-style: normal; background: none; }
-      figcaption span { background-color: rgba(32, 0, 0, 0.44); font-style: italic; padding: 3px 6px 3px 0; margin-left: -11px; }
-      figcaption .numbers { font-size: 13px; }
-      figcaption span .fav-count { text-rendering: normal; background-color: red; padding: 2px 6px 3px 8px; font-style: normal; margin-right: 4px}
-      .uk-navbar { background: rgba(226, 22, 37, 0.95); }
-      .uk-thumbnail { border: none; }
-      .uk-pagination li a { background:red; color: #fff; font-size: 1.5em }
-    </style>
+    <link rel="stylesheet" href="/application.css" />
   </head>
   <body>
     <div class="uk-container uk-container-center">
@@ -57,42 +33,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.26.4/js/uikit.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.26.4/js/components/sticky.min.js"></script>
 
-    <script>
-      $(document).ready(function () {
-        // Hide the heart and title of the comic
-        $('figure a').hide()
-        $('figure figcaption').hide()
-
-        // Show each on hover
-        $('figure').hover( function (e) {
-          $(this).children('a, figcaption').toggle(e.type === 'mouseenter')
-        })
-
-        // Search the comic character
-        $('form#search').on('submit', function (e) {
-          e.preventDefault();
-          $.ajax({
-            url: "/",
-            type: "post",
-            data: { "q": $('q').text() },
-            complete: function (msg) {
-              console.log(msg)
-            }
-          })
-        });
-
-        $('figure a').click(function (e) {
-          e.preventDefault();
-          $.ajax({
-            url: $(this).attr('href'),
-            type: 'post',
-            data: { comic_id: $(this).attr('data-comicId') },
-            complete: function () {
-              alert('all was good')
-            }
-          })
-        })
-      })
-    </script>
+    <script src="/application.js"></script>
   </body>
 </html>
