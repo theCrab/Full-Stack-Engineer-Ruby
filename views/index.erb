@@ -1,9 +1,10 @@
 <div class="uk-clearfix">
   <% @comics.each do |comic| %>
   <figure
+    id="<%= comic[:id]%>"
     class="uk-thumbnail uk-margin-left uk-margin-top"
     style="background: #2b2b2b url(<%= "#{comic[:thumbnail][:path]}.#{comic[:thumbnail][:extension]}" %>)">
-    <a href="/upvote/<%= comic[:id]%>" data-comicId="<%= comic[:id]%>">&#9825;</a>
+    <a href="/comics/<%= comic[:id]%>/upvote" data-comic-id="<%= comic.id %>"><img src="/heart_off.png" alt="Heart" /></a>
 
     <figcaption>
       <strong class="title"> <%= comic[:title] %> </strong> <br>
@@ -12,6 +13,7 @@
         <%= comic[:dates][-1][:date].split('-')[0] %>
       </span>
     </figcaption>
+    <!-- <span class="oriental_view"></span> -->
   </figure>
   <% end %>
 </div>

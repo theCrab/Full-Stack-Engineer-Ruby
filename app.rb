@@ -1,6 +1,6 @@
 #!/usr/local/bin/ruby -rubygems
 
-require 'rubygems'
+require 'json'
 require 'sinatra'
 require 'dm-core'
 require 'dm-validations'

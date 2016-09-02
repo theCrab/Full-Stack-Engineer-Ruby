@@ -5,14 +5,15 @@
     <title><%= @title || 'Streetbees' %></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.26.4/css/uikit.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.26.4/css/components/sticky.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.26.4/css/components/autocomplete.min.css" />
     <link rel="stylesheet" href="/application.css" />
   </head>
   <body>
     <div class="uk-container uk-container-center">
       <nav class="uk-navbar" data-uk-sticky>
         <div class="uk-navbar-center">
-          <p class="uk-margin-top"><a href="/" class=""><img src="https://raw.githubusercontent.com/Streetbees/Full-Stack-Engineer-Ruby/master/assets/marvel_logo.png" alt="Marvel" /></a></p>
-          <form class="uk-search uk-nav-search uk-margin-bottom" id="search" data-uk-search action="/" method="post">
+          <p class="uk-margin-top"><a href="/" class=""><img src="/marvel_logo.png" alt="Marvel" /></a></p>
+          <form class="uk-search uk-nav-search uk-margin-bottom" id="search" data-uk-search="{source:'/search'}">
             <input class="uk-search-field uk-form-width-large" type="search" id="q" name="q" placeholder="Search for marvel characters or teams">
           </form>
         </div>

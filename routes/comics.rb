@@ -3,23 +3,18 @@
 # Search comic characters
 #
 # POST: '/'
-post '/characters' do
-  if params[:q]
-    comics = Client.character(name: params[:q])
-  else
-    comics = Client.comics
-  end
-  # puts comics[0].to_json
-  json comics
+post '/search' do
+  cs = params[:q].empty? ? Client.comics : Client.characters(name: params[:q])
+  format_response(cs, request.accept)
 end
 
 # All favourite comics
 #
 # GET: '/favourites'
 get '/favourites' do
-  favourites = Comic.all
-
-  json favourites
+  favourites = Comic.all.map(&:comic_id)
+  puts "Line 17: #{favourites}"
+  format_response(favourites, request.accept)
 end
 
 # Add comic to favourites
@@ -27,20 +22,34 @@ end
 #
 # POST: '/comics/1234/upvote'
 post '/comics/:id/upvote' do
-  # comic = Comic.create(comic_id: params[:id], favourite: true)
-  comic = Comic.try(comic_id: params[:id], favourite: true)
+  # body = JSON.parse request.body.read
+  comic = Comic.call(params[:id])
 
-  status 201
-  json comic
+  format_response(comic, request.accept)
 end
 
 # Un-favourite a comic
-put '/comics/:id/downvote' do
-end
+# put '/comics/:id/downvote' do
+# end
 
 # Maybe its best to delete downvoted comics.
 # No need to keep them around
-delete '/comics/:id' do
-  comic ||= Comic.get(comic_id: params[:id]) || halt(404)
-  halt 500 unless comic.destroy
+delete '/comics/:id/downvote' do
+  comic = Comic.first(comic_id: params[:id])
+  return status 410 if delete_from_db(comic)
+
+  # format_response(comic, request.accept)
+end
+
+# Better to move this to a helper
+def format_response(data, accept)
+  accept.each do |type|
+    return data.to_json if type.downcase.casecmp('application/json')
+    return data.to_json
+  end
+end
+
+# delete the comic
+def delete_from_db(comic)
+  true if comic.destroy
 end
