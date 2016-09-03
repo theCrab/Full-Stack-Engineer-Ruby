@@ -42,7 +42,7 @@ $(document).ready(function () {
     })
     .done(function (dd) {
       getFavourites()
-      removeFavourites($(this).attr('data-comic-id'))
+      removeFavourite($(this).attr('data-comic-id'))
     })
   })
 
@@ -54,34 +54,34 @@ $(document).ready(function () {
 
       $.ajax({
         url: $(this).attr('href'),
-        type: 'DELETE',
+        type: 'POST',
         dataType: 'json',
         data: { id: $(this).attr('data-comic-id') }, // Uncomment for 'POST'
-        error: function (_res, _status, _jxhr) {
+        fail: function (_res, _status, _jxhr) {
           if (_status === 410) { // is this how to match?
-            removeFavourites($(this).attr('data-comic-id'))
+            removeFavourite($(this).attr('data-comic-id'))
             alert('from success')
           }
         },
         statusCode: {
           410: function () {
-            removeFavourites($(this).attr('data-comic-id'))
+            removeFavourite($(this).attr('data-comic-id'))
             alert('statusCode')
           }
         }
       }).always(function (jqXHR, textStatus, errorThrown) {
-        removeFavourites($(this).attr('data-comic-id'))
+        removeFavourite($(this).attr('data-comic-id'))
         alert(textStatus + ' error::::> ' + errorThrown)
         // getFavourites()
       })
       // .done(function (jqXHR, textStatus, errorThrown) {
-      //   removeFavourites($(this).attr('data-comic-id'))
+      //   removeFavourite($(this).attr('data-comic-id'))
       //   alert('done')
       //   // getFavourites()
       // })
       // .fail(function (jqXHR, textStatus, errorThrown) {
       //   alert('failed')
-      //   removeFavourites($(this).attr('data-comic-id'))
+      //   removeFavourite($(this).attr('data-comic-id'))
       //   // getFavourites()
       // })
     // }
@@ -122,7 +122,7 @@ function getFavourites() {
   })
 }
 
-function removeFavourites(el) {
+function removeFavourite(el) {
   $(el).removeClass('favourites')
   $(el).children('img').attr('src', '/heart_off.png')
 }

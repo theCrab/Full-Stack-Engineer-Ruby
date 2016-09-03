@@ -1,6 +1,6 @@
 #!/usr/local/bin/ruby -rubygems
 
-require 'json'
+require 'rubygems'
 require 'sinatra'
 require 'dm-core'
 require 'dm-validations'
@@ -20,7 +20,7 @@ end
 
 # Setup DataMapper
 # ENV['DATABASE_URL']
-configure :development do
+configure :development, :test do
   DataMapper::Logger.new($stdout, :debug)
   DataMapper.setup(
     :default,

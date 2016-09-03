@@ -55,5 +55,45 @@ RSpec.describe Sinatra::Application do
         expect(last_response.body).to match('<ul class="uk-pagination ')
       end
     end
+
+    context 'when I search for a comic character' do
+      # let(:params) { Hash[q: 'hulk'] }
+
+      it 'with a valid name, I should see a comic characters' do
+        post '/search?q=hulk'
+
+        # puts last_response
+        expect(last_response.body).not_to be_empty
+      end
+
+      it 'with an invalid name, I should see empty page' do
+        post '/search?q=nothulk'
+
+        # puts last_response.to_json
+        expect(last_response.body).to be_empty
+        expect(last_response.status).to eq(404)
+      end
+    end
+
+    context 'Favourite comics' do
+      arr = []
+
+      it 'should be a success' do
+        get '/favourites'
+
+        arr = JSON.parse(last_response.body)
+        expect(arr).not_to be(Array)
+      end
+
+      # it 'I should see it in my favourite comics' do
+      #   get '/favourites'
+      #
+      #   expect(last_response.body.to_a).to be(Array)
+      # end
+      #
+      # it 'I should see my favourite comics' do
+      #   delete '/favourites/12345'
+      # end
+    end
   end
 end

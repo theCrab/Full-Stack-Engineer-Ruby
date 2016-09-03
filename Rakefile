@@ -1,4 +1,9 @@
 require 'dm-migrations'
+require './rake_spec'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+task default: :spec
 
 desc 'List all routes'
 task :routes do

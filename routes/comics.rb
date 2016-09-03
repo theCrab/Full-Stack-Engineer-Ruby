@@ -5,6 +5,8 @@
 # POST: '/'
 post '/search' do
   cs = params[:q].empty? ? Client.comics : Client.characters(name: params[:q])
+  halt 404 if cs.size == 0
+
   format_response(cs, request.accept)
 end
 
@@ -13,7 +15,7 @@ end
 # GET: '/favourites'
 get '/favourites' do
   favourites = Comic.all.map(&:comic_id)
-  puts "Line 17: #{favourites}"
+  # puts "Line 17: #{favourites}"
   format_response(favourites, request.accept)
 end
 
@@ -44,6 +46,7 @@ end
 # Better to move this to a helper
 def format_response(data, accept)
   accept.each do |type|
+    # return data.to_xml  if type.downcase.eql? 'text/xml'
     return data.to_json if type.downcase.casecmp('application/json')
     return data.to_json
   end
