@@ -1,5 +1,8 @@
 #!/usr/local/bin/ruby -rubygems
 
+# NOTE: To run tests `bundle exec rspec rake_spec.rb -f doc`
+# NOTE: To run app `bundle exec rackup`
+
 require 'rubygems'
 require 'sinatra'
 require 'dm-core'

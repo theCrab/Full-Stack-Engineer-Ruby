@@ -1,5 +1,8 @@
 # encoding: UTF-8
 
+# NOTE: To run tests `bundle exec rspec rake_spec.rb -f doc`
+# NOTE: To run app `bundle exec rackup`
+
 require 'rack/test'
 require 'rspec'
 
@@ -29,7 +32,7 @@ RSpec.configure do |config|
   end
 end
 
-RSpec.describe Sinatra::Application do
+RSpec.describe 'SBMarvel' do
   describe 'GET "/"' do
     context 'when I visit home page' do
       let(:action) { get '/' }
